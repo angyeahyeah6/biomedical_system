@@ -59,13 +59,12 @@
   - ctd_relation: ctd 讀入的原始 relation (Created from: sandy.parser.CtdParser)
   - ctd_neighbor: 轉換 ctd_relation 的儲存格式 (Created from: sandy.parser.CtdParser)
 - DB 名稱: biomedical_literature_by_year
-  > mesh_concept_by_year: 儲存 concept 根據年份共在 predication 出現幾次(freq)與 document frequency
-  >
-  > > Created from: ken.prepare.SemMedPreparser.processMedlineGroupByYear()
-  > > mesh*predication_aggregate: 將 semmed_ver26.predicationaggregate 裡的 umls concept 轉成 mesh term，並只保留所需的欄位
-  > > Created from: ken.prepare.SemMedPreparser.create_mesh_predication_aggregate()
-  > > mesh_seeds: 17264 個 concept seeds, 與 vocabulary/那五個檔案相同，儲存其他表所用的 mesh_id
-  > > neighbor_by_predication: 處理 semmed_ver26.predicationaggregate，並將共同出現的 concept 儲存起來，同時記錄共同出現的年份與次數
-  > > created from ken.prepare.SemMedPreparser.create_neighbor_by_predication()
-  > > neighbor_cooccur: 與 neighbor_by* predication 相似，不過 based on co-occurrence method (參考 paper)
-  > > created from ken.prepare.SemMedPreparser.processCooccurNeighborGroupByYear()
+  - mesh_concept_by_year: 儲存 concept 根據年份共在 predication 出現幾次(freq)與 document frequency:
+    - Created from: ken.prepare.SemMedPreparser.processMedlineGroupByYear()
+  - mesh_predication_aggregate: 將 semmed_ver26.predicationaggregate 裡的 umls concept 轉成 mesh term，並只保留所需的欄位:
+    - Created from: ken.prepare.SemMedPreparser.create_mesh_predication_aggregate()
+  - mesh_seeds: 17264 個 concept seeds, 與 vocabulary/那五個檔案相同，儲存其他表所用的 mesh_id
+  - neighbor_by_predication: 處理 semmed_ver26.predicationaggregate，並將共同出現的 concept 儲存起來，同時記錄共同出現的年份與次數:
+    - Created from ken.prepare.SemMedPreparser.create_neighbor_by_predication()
+  - neighbor_cooccur: 與 neighbor_by\* predication 相似，不過 based on co-occurrence method (參考 paper):
+    - Created from ken.prepare.SemMedPreparser.processCooccurNeighborGroupByYear()
