@@ -1,0 +1,27 @@
+{
+  "root": true,
+
+  "extends": ["eslint:recommended", "plugin:vue/strongly-recommended"],
+  "rules": {
+    "no-console": "off",
+    "prettier/prettier": "off",
+    "vue/singleline-html-element-content-newline": "off",
+    "vue/max-attributes-per-line": "off",
+    "vue/html-closing-bracket-spacing": "off",
+    "vue/html-self-closing": "off",
+    "vue/mustache-interpolation-spacing": "off",
+    "vue/multiline-html-element-content-newline": "off",
+    "vue/attribute-hyphenation": "off",
+    "eqeqeq": ["error", "smart"]
+  },
+  "parserOptions": {
+    "parser": "babel-eslint",
+    "sourceType": "module",
+    "allowImportExportEverywhere": "true"
+  },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  }
+}
