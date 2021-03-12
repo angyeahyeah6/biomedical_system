@@ -132,7 +132,7 @@ public class AttrTester {
                 dataSet.add(inst);
             }
         }
-        writeAttr("output/attr/stat_500.arff", dataSet);
+        writeAttr("output/attr/new_stat.arff", dataSet);
     }
 
 
