@@ -26,11 +26,22 @@
         :fetch-suggestions="queryDrug"
         placeholder="please input drug name"
       >
-        <i class="el-icon-search el-input__icon" slot="suffix"> </i>
+        <i class="el-icon-search el-input__icon" slot="suffix" @click="handleSearchClick"> </i>
         <!-- <template slot="prefix">
           <biomedical-icon icon="search" class="filter-prefix"></biomedical-icon>
         </template> -->
       </el-autocomplete>
+    </div>
+    <div style="display: flex; justify-content: center">
+      <el-collapse style="width: 90%">
+        <el-collapse-item class="collapse-item-header">
+          <template slot="title">
+            <span class="collapse-title">Projects</span>
+          </template>
+          <div>cdcdcd</div>
+        </el-collapse-item>
+        <el-collapse-item> njnj </el-collapse-item>
+      </el-collapse>
     </div>
   </div>
 </template>
@@ -41,45 +52,39 @@ export default {
   name: 'SearchPatents',
   data() {
     return {
-      drugs: ['d1', 'd2', 'd3', 'd4'],
+      drugs: [],
       drugDict: [],
       drugName: '',
     };
   },
   methods: {
-    // getAllDrug() {
-    //   return api.getAllDrug().then((result) => {
-    //     console.log(result.data);
-    //     this.drugName = result.data;
-    //   });
-    // },
+    getAllDrug() {
+      return api.getAllDrug().then((result) => {
+        console.log(result.data);
+        this.drug = result.data;
+      });
+    },
     queryDrug(drug, callback) {
       const results = drug
         ? this.drugDict.filter((item) => {
             return item.value.toLowerCase().indexOf(drug.toLowerCase()) === 0;
           })
         : this.drugDict;
-      // 调用 callback 返回建议列表的数据
+
       callback(results);
     },
-    trans() {
-      this.drugDict = this.drugs.map((o) => {
-        const obj = { value: o };
-        return obj;
-      });
-    },
+    // trans() {
+    //   this.drugDict = this.drugs.map((o) => {
+    //     const obj = { value: o };
+    //     return obj;
+    //   });
+    // },
+    handleSearchClick() {},
   },
   mounted() {
-    // this.getAllDrug();
-    this.trans();
+    this.getAllDrug();
+    // this.trans();
   },
 };
 </script>
-<style lang="stylus" scoped>
-.filter-prefix
-  border-right 2px solid gray
-  margin-right 20px
-
-.el-autocomplete >>> .el-input .el-input--prefix >>> .el-input__inner
-  padding-left 50px
-</style>
+<style lang="stylus" scoped></style>
