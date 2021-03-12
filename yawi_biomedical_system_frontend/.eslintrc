@@ -12,7 +12,8 @@
     "vue/mustache-interpolation-spacing": "off",
     "vue/multiline-html-element-content-newline": "off",
     "vue/attribute-hyphenation": "off",
-    "eqeqeq": ["error", "smart"]
+    "eqeqeq": ["error", "smart"],
+    "no-unused-vars": "off"
   },
   "parserOptions": {
     "parser": "babel-eslint",

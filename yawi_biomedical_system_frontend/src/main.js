@@ -1,8 +1,11 @@
-import Vue from "vue";
-import App from "./App.vue";
-import ElementUI from "element-ui";
+import Vue from 'vue';
+import App from './App.vue';
+import ElementUI from 'element-ui';
 
-import ECharts from "vue-echarts";
+import BiomedicalIcon from './components/BiomedicalIcon.vue';
+import 'element-ui/lib/theme-chalk/index.css';
+
+import ECharts from 'vue-echarts';
 // import "echarts/lib/chart/line";
 // import "echarts/lib/component/legend";
 // import "echarts/lib/component/title.js";
@@ -14,15 +17,16 @@ import ECharts from "vue-echarts";
 // import "echarts/lib/chart/scatter";
 // import "echarts/lib/chart/sankey";
 // import "echarts/lib/component/dataZoom";
-Vue.component("v-chart", ECharts);
+Vue.component('v-chart', ECharts);
+Vue.component('biomedical-icon', BiomedicalIcon);
 Vue.use(ElementUI);
 
-const isDebug_mode = process.env.NODE_ENV !== "production";
+// const isDebug_mode = process.env.NODE_ENV !== 'production';
 
-isDebug_mode && require("./mock");
+// isDebug_mode && require('./mock');
 
 Vue.config.productionTip = false;
 
 new Vue({
-  render: (h) => h(App),
-}).$mount("#app");
+  render: h => h(App),
+}).$mount('#app');
