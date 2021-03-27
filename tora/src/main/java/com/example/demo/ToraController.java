@@ -66,15 +66,18 @@ public class ToraController {
         return drugsAll;
     }
     @PostMapping("/get_eval")
-    public Map<String, Map<String, Double>> getRankingDetail(@RequestBody GetEval getEval) {
+    public Map<String, Map<String, Object>> getRankingDetail(@RequestBody GetEval getEval) {
         String drug = "Cobalt";
         ToraManager manager = new ToraManager();
+        Integer cnt = 0;
         List<IndexScore> diseaseRank = manager.predictRank(drug);
-        Map<String, Map<String, Double>> evaluationScore = new HashMap<>();
+        Map<String, Map<String, Object>> evaluationScore = new HashMap<>();
         for(IndexScore score : diseaseRank){
-            Map<String, Double> tmp = new HashMap<>();
+            Map<String, Object> tmp = new HashMap<>();
             tmp.put("feature1", score.getFeature());
             tmp.put("feature2", score.getFeature2());
+            tmp.put("id", cnt.toString());
+            cnt += 1;
             evaluationScore.put(score.getName(),tmp);
         }
         return evaluationScore;
