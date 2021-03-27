@@ -57,6 +57,9 @@ public class ToraController {
             for(String rm : removeList){
                 IntermediatePredicatwithDisease.remove(rm);
             }
+
+            IntermediatePredicatwithDisease.remove(score.getName());
+
         }
         return IntermediatePredicatwithDisease;
     }
