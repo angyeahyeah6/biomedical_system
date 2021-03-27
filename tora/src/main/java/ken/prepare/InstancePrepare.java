@@ -19,7 +19,7 @@ public class InstancePrepare {
     public static void main(String[] args) {
 //        createAllEvalrank();
 //        createGoldenFile();
-//        createInstFile();
+        createInstFile();
     }
 
     /*  create attribute file from 500 focal drug
@@ -65,6 +65,7 @@ public class InstancePrepare {
         for (String drug : drugsPost.keySet()) {
             int drugId = meshNameIdMap.get(drug);
             System.out.format("%d:%s\n", count++, drug);
+            // 兩個node代表的是同一個drug 但不同時間段的關係
             LiteratureNode nodePre = allNodePre.get(drug);
             LiteratureNode nodePost = drugsPost.get(drug);
 
@@ -72,13 +73,21 @@ public class InstancePrepare {
             Set<String> cooccurNeighborsPre = nodePre.getCooccurNeighbors().keySet();
             Set<String> cooccurNeighborsPost = nodePost.getCooccurNeighbors().keySet();
 
+            // 找到所有與drug有共同出現過的node, 並且只 contained by set1 and not contained by set2.
+            // 只在以後出現過，但沒有在以前出現過
             Set<String> evalSet = Sets.difference(cooccurNeighborsPost, cooccurNeighborsPre);
+
+            // 只看disease的部分，evalSet裡面disease的部分
             Set<String> evalDiseaseSet = Sets.intersection(evalSet, diseases);
+
             Set<String> uselessDiseaseSet = Sets.difference(diseases, evalDiseaseSet);
+
             for (String disease : evalDiseaseSet) {
                 int diseaseId = meshNameIdMap.get(disease);
+                // 以前有沒有有關連過
                 if (!hasIntermediates(drug, disease, allNodePre))
                     continue;
+                //看post去做的條件判斷
                 if (predicateNeighborPost.containsKey(disease)) {
                     Multiset<String> diseasePredicate = predicateNeighborPost.get(disease);
                     int diseaseCount = diseasePredicate.size();
