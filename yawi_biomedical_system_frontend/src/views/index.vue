@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div style="height: 250px; background-color: #fedc3d; display: flex; align-items: center">
       <div style="width: 100%; display: flex; justify-content: center">
         <div
@@ -27,18 +27,15 @@
         placeholder="please input drug name"
       >
         <i class="el-icon-search el-input__icon" slot="suffix" @click="handleSearchClick"> </i>
-        <!-- <template slot="prefix">
-          <biomedical-icon icon="search" class="filter-prefix"></biomedical-icon>
-        </template> -->
       </el-autocomplete>
     </div>
     <div style="display: flex; justify-content: center">
-      <el-collapse style="width: 90%">
+      <el-collapse style="width: 928px">
         <el-collapse-item class="collapse-item-header">
           <template slot="title">
             <span class="collapse-title">Projects</span>
           </template>
-          <div>cdcdcd</div>
+          <net :predication="predication" :drugName="drugName"></net>
         </el-collapse-item>
         <el-collapse-item> njnj </el-collapse-item>
       </el-collapse>
@@ -47,21 +44,37 @@
 </template>
 <script>
 import api from '../api';
+import Net from './Net.vue';
 
 export default {
   name: 'SearchPatents',
+  components: {
+    Net,
+  },
   data() {
     return {
       drugs: [],
       drugDict: [],
       drugName: '',
+      predication: {},
+      evaluation: {},
+      loading1: false,
+      laoding2: false,
     };
+  },
+  computed: {
+    loading() {
+      return this.loading1 && this.loading2;
+    },
   },
   methods: {
     getAllDrug() {
       return api.getAllDrug().then((result) => {
-        console.log(result.data);
-        this.drug = result.data;
+        this.drugs = result;
+        this.drugDict = this.drugs.map((o) => {
+          const obj = { value: o };
+          return obj;
+        });
       });
     },
     queryDrug(drug, callback) {
@@ -73,17 +86,52 @@ export default {
 
       callback(results);
     },
-    // trans() {
-    //   this.drugDict = this.drugs.map((o) => {
-    //     const obj = { value: o };
-    //     return obj;
-    //   });
-    // },
-    handleSearchClick() {},
+    getPredicate(searchDrug) {
+      return api
+        .getPredicate(searchDrug)
+        .then((result) => {
+          this.predication = result;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.loading1 = false;
+        });
+    },
+    getEval(searchDrug) {
+      return api
+        .getEval(searchDrug)
+        .then((result) => {
+          this.evaluation = result;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.loading2 = false;
+        });
+    },
+    handleSearchClick() {
+      this.loading1 = true;
+      this.loading2 = true;
+      this.predication = {};
+      this.evaluation = {};
+      const searchDrug = { drugName: this.drugName };
+      this.getPredicate(searchDrug);
+      this.getEval(searchDrug);
+      // return api
+      //   .getPredicate(searchDrug)
+      //   .then((result) => {
+      //     this.predication = result;
+      //   })
+      //   .finally(() => {
+      //     this.loading = false;
+      //   });
+    },
   },
   mounted() {
     this.getAllDrug();
-    // this.trans();
   },
 };
 </script>

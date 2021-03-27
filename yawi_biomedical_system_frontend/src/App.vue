@@ -22,6 +22,9 @@ export default {
   background #FEA680
   border-radius 3px
 
+.collapse-item-header .el-collapse-item__header >>> .collapse-title
+  margin-left 10px
+
 .collapse-item-header .el-icon-arrow-right
   margin 0 8px 0 4px
 

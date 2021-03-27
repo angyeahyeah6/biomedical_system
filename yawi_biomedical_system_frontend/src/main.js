@@ -6,18 +6,15 @@ import BiomedicalIcon from './components/BiomedicalIcon.vue';
 import 'element-ui/lib/theme-chalk/index.css';
 
 import ECharts from 'vue-echarts';
-// import "echarts/lib/chart/line";
-// import "echarts/lib/component/legend";
-// import "echarts/lib/component/title.js";
-// import "echarts/lib/component/tooltip";
-// import "echarts/lib/component/axis";
-// import "echarts/lib/chart/pictorialBar.js";
-// import "echarts/lib/chart/bar";
-// import "echarts/lib/chart/graph";
-// import "echarts/lib/chart/scatter";
-// import "echarts/lib/chart/sankey";
-// import "echarts/lib/component/dataZoom";
+
+import { use } from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers';
+import { GraphChart } from 'echarts/charts';
+import { TitleComponent, TooltipComponent, LegendComponent, DataZoomComponent } from 'echarts/components';
+
+use([CanvasRenderer, GraphChart, TitleComponent, TooltipComponent, LegendComponent, DataZoomComponent]);
 Vue.component('v-chart', ECharts);
+
 Vue.component('biomedical-icon', BiomedicalIcon);
 Vue.use(ElementUI);
 
