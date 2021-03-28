@@ -26,6 +26,8 @@ export default {
       cNode: [],
       locateX: [],
       locateY: [],
+      y_C_location: [],
+      c_num: 0,
     };
   },
   watch: {
@@ -37,6 +39,8 @@ export default {
         this.cNode = [];
         this.locateX = [];
         this.locateY = [];
+        this.c_num = 0;
+        this.y_C_location = new Array(20).fill(125).map((o, idx) => o * (idx * 2 + 1));
         this.optionProcess(newval);
       }
     },
@@ -93,6 +97,8 @@ export default {
         ],
       };
       this.loading = false;
+      if (this.nodes.length !== 1) this.$emit('update:active', true);
+      else this.$emit('update:active', false);
     },
     randomXY(min, max) {
       return Math.floor(Math.random() * max) + min;
@@ -134,17 +140,16 @@ export default {
         });
         Object.entries(o[1]).map((c) => {
           if (!this.cNode.includes(c[0])) {
-            const y_c = Math.floor(Math.random() * 5000) + 0;
-            const x_c = 5000;
             this.cNode.push(c[0]);
             this.nodes.push({
               category: 2,
               id: c[0],
               name: c[0],
               value: 15,
-              x: x_c,
-              y: y_c,
+              x: 10000,
+              y: this.y_C_location[this.c_num],
             });
+            this.c_num += 1;
           }
         });
       });
@@ -174,9 +179,6 @@ export default {
         return relation;
       }, []);
 
-      // console.log(this.links);
-      // console.log(this.nodes);
-      // console.log(this.categories);
       this.chainGraphOption();
     },
   },

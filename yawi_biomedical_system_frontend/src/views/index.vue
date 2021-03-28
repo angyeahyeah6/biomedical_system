@@ -30,14 +30,19 @@
       </el-autocomplete>
     </div>
     <div style="display: flex; justify-content: center">
-      <el-collapse style="width: 928px">
-        <el-collapse-item class="collapse-item-header">
+      <el-collapse style="width: 928px" v-model="activeCollapse">
+        <el-collapse-item class="collapse-item-header" name="biomedicalGraph">
           <template slot="title">
-            <span class="collapse-title">Projects</span>
+            <span class="collapse-title">Biomedical Detaial</span>
           </template>
-          <net :predication="predication" :drugName="drugName"></net>
+          <net :predication="predication" :drugName="drugName" :active.sync="activeGraph"></net>
         </el-collapse-item>
-        <el-collapse-item> njnj </el-collapse-item>
+        <el-collapse-item class="collapse-item-header" name="detailEvaluation">
+          <template slot="title">
+            <span class="collapse-title">Content Detail</span>
+          </template>
+          <evaluation :evaluation="evaluation" :active.sync="activeEval"></evaluation>
+        </el-collapse-item>
       </el-collapse>
     </div>
   </div>
@@ -45,11 +50,13 @@
 <script>
 import api from '../api';
 import Net from './Net.vue';
+import Evaluation from './Evaluation.vue';
 
 export default {
   name: 'SearchPatents',
   components: {
     Net,
+    Evaluation,
   },
   data() {
     return {
@@ -60,11 +67,22 @@ export default {
       evaluation: {},
       loading1: false,
       laoding2: false,
+      activeCollapse: [],
+      activeGraph: false,
+      activeEval: false,
     };
   },
   computed: {
     loading() {
       return this.loading1 && this.loading2;
+    },
+  },
+  watch: {
+    activeGraph(newVal) {
+      if (newVal) {
+        this.activeCollapse.push('biomedicalGraph');
+        this.activeCollapse.push('detailEvaluation');
+      }
     },
   },
   methods: {
@@ -117,6 +135,7 @@ export default {
       this.loading2 = true;
       this.predication = {};
       this.evaluation = {};
+      this.activeCollapse = [];
       const searchDrug = { drugName: this.drugName };
       this.getPredicate(searchDrug);
       this.getEval(searchDrug);
