@@ -26,8 +26,8 @@ export default {
       cNode: [],
       locateX: [],
       locateY: [],
-      y_C_location: [],
       c_num: 0,
+      cLink: {},
     };
   },
   watch: {
@@ -40,7 +40,7 @@ export default {
         this.locateX = [];
         this.locateY = [];
         this.c_num = 0;
-        this.y_C_location = new Array(20).fill(125).map((o, idx) => o * (idx * 2 + 1));
+        this.cLink = {};
         this.optionProcess(newval);
       }
     },
@@ -56,42 +56,51 @@ export default {
             }),
           },
         ],
-        animationDurationUpdate: 1500,
-        animationEasingUpdate: 'quinticInOut',
+        tooltip: {
+          trigger: 'item',
+          extraCssText: 'max-width: 600px; word-break: break-word; white-space: normal',
+          appendToBody: true,
+          confine: true,
+        },
+        // animationDurationUpdate: 1500,
+        // animationEasingUpdate: 'quinticInOut',
         series: [
           {
-            name: 'Les Miserables',
+            name: 'Relationship Graph',
             type: 'graph',
-            layout: 'none',
+            layout: 'force',
             data: this.nodes,
             links: this.links,
             categories: this.categories,
             roam: true,
-            // force: {
-            //   edgeLength: [50, 300],
-            // },
 
-            label: {
-              position: 'right',
-              formatter: '{b}',
+            edgeSymbol: ['none', 'arrow'],
+            edgeSymbolSize: 4,
+            force: {
+              repulsion: 500,
+              gravity: 0.1,
             },
-            lineStyle: {
-              color: 'source',
-              width: 2,
-              curveness: 0.2,
+            emphasis: { focus: 'adjacency' },
+            tooltip: {
+              extraCssText: 'overflow:scroll',
+
+              formatter: ({ data }) => {
+                if (!!data.name) {
+                  if (!!data.relateB) {
+                    return `<div style: "height: 300px">${data.relateB}<div>`;
+                  } else {
+                    return data.name;
+                  }
+                } else {
+                  return `${data.source} → ${data.target}`;
+                }
+              },
             },
 
-            // edgeSymbol: ['none', 'arrow'],
-            // edgeSymbolSize: 4,
-            // roam: true,
-            // symbolSize: (value) => {
-            //   if (!value) return 5;
-            //   return value === 20 ? 40 : 30;
-            // },
-            // tooltip: {
-            //   formatter: ({ data }) => {
-            //     return data.name;
-            //   },
+            animation: false,
+            // lineStyle: {
+            //   color: 'source',
+            //   width: 2,
             // },
           },
         ],
@@ -100,33 +109,26 @@ export default {
       if (this.nodes.length !== 1) this.$emit('update:active', true);
       else this.$emit('update:active', false);
     },
-    randomXY(min, max) {
-      return Math.floor(Math.random() * max) + min;
-    },
+    // randomXY(min, max) {
+    //   return Math.floor(Math.random() * max) + min;
+    // },
     optionProcess(newval) {
       this.categories = [{ name: 'A' }, { name: 'B' }, { name: 'C' }];
       const searchDrug = {
         category: 0,
         id: this.drugName,
         name: this.drugName,
-        value: 20,
-        symbolSize: 30,
-        x: 100,
-        y: 2500,
+        symbolSize: 5,
       };
       this.nodes.push(searchDrug);
 
       Object.entries(newval).forEach((o) => {
-        const x_b = Math.floor(Math.random() * 3000) + 1000;
-        const y_b = Math.floor(Math.random() * 5000) + 0;
         this.nodes.push({
           category: 1,
           id: o[0],
           name: o[0],
-          value: 15,
-          x: x_b,
-          y: y_b,
 
+          symbolSize: 2,
           relate: Object.entries(o[1]).reduce(
             (relation, item) => {
               relation.push({
@@ -145,14 +147,17 @@ export default {
               category: 2,
               id: c[0],
               name: c[0],
-              value: 15,
-              x: 10000,
-              y: this.y_C_location[this.c_num],
+              symbolSize: 5,
+              relateB: `Disease Name: ${c[0]}<br /> Related B: <br /><span style="margin-left: 30px">${o[0]}</span>`,
             });
             this.c_num += 1;
+          } else {
+            const idx = this.nodes.findIndex((o) => o.name === c[0]);
+            this.nodes[idx].relateB += `<br /><span style="margin-left: 30px">${o[0]}</span>`;
           }
         });
       });
+      // console.log(this.nodes.filter((o) => !!o.relateB));
 
       this.links = this.nodes.reduce((relation, node) => {
         if (node.id === this.drugName) {
