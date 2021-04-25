@@ -68,3 +68,34 @@
     - Created from ken.prepare.SemMedPreparser.create_neighbor_by_predication()
   - neighbor_cooccur: 與 neighbor_by\* predication 相似，不過 based on co-occurrence method (參考 paper):
     - Created from ken.prepare.SemMedPreparser.processCooccurNeighborGroupByYear()
+
+
+# yawi_biomedical_system_frontend
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Run your tests
+```
+npm run test
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
