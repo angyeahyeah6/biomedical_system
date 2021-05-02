@@ -157,7 +157,7 @@ export default {
           }
         });
       });
-      // console.log(this.nodes.filter((o) => !!o.relateB));
+      // console.log(this.nodes);
 
       this.links = this.nodes.reduce((relation, node) => {
         if (node.id === this.drugName) {
