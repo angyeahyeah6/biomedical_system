@@ -40,6 +40,18 @@ const real = {
       })
       .then(res => res.json());
   },
+  getDetailPredicate: token => {
+    return window
+      .fetch(`${url}get_detail_predicate`, {
+        method: 'POST',
+        body: JSON.stringify(token),
+        headers: {
+          'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+      .then(res => res.json());
+  },
 };
 export default real;
 // export default devMode ? mock : real;

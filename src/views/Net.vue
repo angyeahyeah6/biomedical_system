@@ -118,7 +118,7 @@ export default {
         category: 0,
         id: this.drugName,
         name: this.drugName,
-        symbolSize: 5,
+        symbolSize: 10,
       };
       this.nodes.push(searchDrug);
 
@@ -147,7 +147,7 @@ export default {
               category: 2,
               id: c[0],
               name: c[0],
-              symbolSize: 5,
+              symbolSize: 15,
               relateB: `Disease Name: ${c[0]}<br /> Related B: <br /><span style="margin-left: 30px">${o[0]}</span>`,
             });
             this.c_num += 1;

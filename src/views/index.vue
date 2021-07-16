@@ -19,17 +19,32 @@
         </div>
       </div>
     </div>
-    <div style="height: 250px; display: flex; align-items: center; justify-content: center">
-      <el-autocomplete
-        style="width: 928px"
-        v-model="drugName"
-        :fetch-suggestions="queryDrug"
-        placeholder="please input drug name"
-      >
-        <i class="el-icon-search el-input__icon" slot="suffix" @click="handleSearchClick"> </i>
-      </el-autocomplete>
-    </div>
     <div style="display: flex; justify-content: center">
+      <div style="margin-top: 30px; display: flex; align-items: center; justify-content: space-between; width: 928px">
+        <el-autocomplete
+          style="width: 280px"
+          v-model="drugName"
+          :fetch-suggestions="queryDrug"
+          placeholder="Drug Name"
+          clearable
+        >
+        </el-autocomplete>
+        <el-input style="width: 280px" v-model="year" clearable placeholder="Query Year"></el-input>
+        <el-select style="width: 280px" v-model="type" placeholder="Classifier Type">
+          <el-option v-for="item in classifierTypes" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: center; margin-top: 10px">
+      <div style="width: 928px; display: flex; justify-content: flex-end">
+        <el-button type="primary" plain icon="el-icon-search" @click="handleSearchClick" :disabled="!readyToSearch">
+          Search
+        </el-button>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-top: 30px">
       <el-collapse style="width: 928px" v-model="activeCollapse">
         <el-collapse-item class="collapse-item-header" name="biomedicalGraph">
           <template slot="title">
@@ -41,7 +56,13 @@
           <template slot="title">
             <span class="collapse-title">Content Detail</span>
           </template>
-          <evaluation :evaluation="evaluation" :active.sync="activeEval"></evaluation>
+          <evaluation
+            :evaluation="evaluation"
+            :active.sync="activeEval"
+            :drugName="drugName"
+            :year="year"
+            :type="type"
+          ></evaluation>
         </el-collapse-item>
       </el-collapse>
     </div>
@@ -70,11 +91,26 @@ export default {
       activeCollapse: [],
       activeGraph: false,
       activeEval: false,
+      classifierTypes: [
+        {
+          value: '0',
+          label: 'a',
+        },
+        {
+          value: '1',
+          label: 'b',
+        },
+      ],
+      type: '',
+      year: '',
     };
   },
   computed: {
     loading() {
       return this.loading1 && this.loading2;
+    },
+    readyToSearch() {
+      return !!this.drugName && !!this.year && this.type !== null;
     },
   },
   watch: {
@@ -136,17 +172,10 @@ export default {
       this.predication = {};
       this.evaluation = {};
       this.activeCollapse = [];
-      const searchDrug = { drugName: this.drugName };
+      const searchDrug = { drugName: this.drugName, endYear: this.year, classifierType: this.type };
+      // console.log(searchDrug);
       this.getPredicate(searchDrug);
       this.getEval(searchDrug);
-      // return api
-      //   .getPredicate(searchDrug)
-      //   .then((result) => {
-      //     this.predication = result;
-      //   })
-      //   .finally(() => {
-      //     this.loading = false;
-      //   });
     },
   },
   mounted() {
