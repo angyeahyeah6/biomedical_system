@@ -99,3 +99,8 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Recommendation
+[EChart](https://echarts.apache.org/zh/index.html).
+[Element UI](https://element.eleme.io/#/zh-CN/component/layout).
+

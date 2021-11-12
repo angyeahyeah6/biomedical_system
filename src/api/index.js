@@ -4,6 +4,7 @@ const url = 'http://localhost:8080/';
 // import mock from "./mock";
 // const devMode = process.env.NODE_ENV === "development";
 
+// 所有api都在這裡
 const real = {
   getPredicate: token => {
     return window

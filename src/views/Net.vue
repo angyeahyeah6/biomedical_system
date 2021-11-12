@@ -24,8 +24,6 @@ export default {
       nodes: [],
       loading: false,
       cNode: [],
-      locateX: [],
-      locateY: [],
       c_num: 0,
       cLink: {},
     };
@@ -37,8 +35,6 @@ export default {
         this.links = [];
         this.nodes = [];
         this.cNode = [];
-        this.locateX = [];
-        this.locateY = [];
         this.c_num = 0;
         this.cLink = {};
         this.optionProcess(newval);
@@ -109,9 +105,6 @@ export default {
       if (this.nodes.length !== 1) this.$emit('update:active', true);
       else this.$emit('update:active', false);
     },
-    // randomXY(min, max) {
-    //   return Math.floor(Math.random() * max) + min;
-    // },
     optionProcess(newval) {
       this.categories = [{ name: 'A' }, { name: 'B' }, { name: 'C' }];
       const searchDrug = {
@@ -121,7 +114,6 @@ export default {
         symbolSize: 10,
       };
       this.nodes.push(searchDrug);
-
       Object.entries(newval).forEach((o) => {
         this.nodes.push({
           category: 1,
@@ -171,11 +163,6 @@ export default {
             link.push({
               source: source,
               target: target,
-              //   label: {
-              //       formatter: (data) => {
-              //         data
-              //       },
-              //   }
             });
             return link;
           }, []);
